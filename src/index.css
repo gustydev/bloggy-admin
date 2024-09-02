@@ -1,0 +1,37 @@
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 0px 72px;
+}
+
+.topBar {
+    border-bottom: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.topBar > ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.topBar > * {
+    margin-bottom: 4px;
+}
