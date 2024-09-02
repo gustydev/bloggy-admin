@@ -30,9 +30,10 @@ export default function Login() {
             <label htmlFor="name">name: </label>
             <input onChange={(e) => {handleInputChange(e)}} required type="text" id='name' name='name' placeholder='your username' />
             <label htmlFor="password">password: </label>
-            <input onChange={(e) => {handleInputChange(e)}} required  type="password" id='password' name='password' />
+            <input onChange={(e) => {handleInputChange(e)}} required type="password" id='password' name='password' />
             <input type="submit" value="submit" />
         </form>
+        {auth.error && <p><strong>{auth.error}</strong>. Please try again.</p>}
         <p>
             don&apos;t have an account? <Link to='/register'>register</Link>
         </p>

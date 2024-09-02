@@ -5,6 +5,7 @@ import AuthContext from "./AuthContext";
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   async function userLogin(data) {
@@ -17,13 +18,19 @@ export default function AuthProvider({ children }) {
             body: JSON.stringify(data)
         })
 
-        const json = await response.json();           
+        const json = await response.json();       
+        
+        if (!response.ok) {
+          setError(json.error.message || 'An error has occured. Please try again.')
+          throw new Error(`Error in user login (status ${response.status})`)
+        }
          
         if (json) {
           setUser(json.user)
-          setToken(json.token)
           localStorage.setItem('token', json.token)
+          setToken(json.token)
           localStorage.setItem('user', JSON.stringify(json.user))
+          setError('')
           navigate('/')
           return;
         }
@@ -41,7 +48,7 @@ export default function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, userLogin, logOut }}>
+    <AuthContext.Provider value={{ token, user, userLogin, logOut, error }}>
       {children}
     </AuthContext.Provider>
   );

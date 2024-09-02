@@ -3,7 +3,6 @@ import useAuth from "../../hooks/useAuth";
 
 export default function TopBar() {
     const auth = useAuth();
-    console.log(auth)
     return (
     <div className="topBar">
         <h1>bloggy</h1>
