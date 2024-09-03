@@ -35,3 +35,11 @@ a {
 .topBar > * {
     margin-bottom: 4px;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 8px;
+    padding-bottom: 16px;
+}

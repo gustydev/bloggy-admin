@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styles from './dashboard.module.css'
 import DashboardPost from "./DashboardPost";
 import DashboardComment from "./DashboardComment";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
     const [posts, setPosts] = useState([]);
@@ -87,8 +88,6 @@ export default function Dashboard() {
     if (error) {
         return 'A network error has occured.'
     }
-    
-    console.log(posts)
 
     return (
         <div className={styles.home}>
@@ -96,6 +95,7 @@ export default function Dashboard() {
             <div className={styles.posts}>
                 <h2>posts</h2>
                 {loadingPosts ? 'loading posts...' : posts.map((post) => <DashboardPost key={post.id} {...post} />)}
+                <Link to='/post/new' className={styles.newPost}><button>new post</button></Link>
             </div>
             <div className={styles.pageNav}>
                 {postPage > 1 && <button className={styles.newer} onClick={() => handlePostPageChange(-1)}>show newer posts</button>}

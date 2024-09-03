@@ -8,6 +8,7 @@ import Login from './components/auth/Login.jsx';
 import Register from './components/auth/Register.jsx';
 import ProtectedRoute from './components/auth/ProtectedRoute.jsx'
 import Post from './components/post/Post.jsx';
+import NewPost from './components/post/new/NewPost.jsx';
 import './index.css'
 
 const router = createBrowserRouter([
@@ -20,7 +21,8 @@ const router = createBrowserRouter([
       { path: 'register', element: <Register/>},
       { element: <ProtectedRoute/>, children: [
         { index: true, element: <Dashboard/> },
-        { path: 'post/:postId', element: <Post/> }
+        { path: 'post/:postId', element: <Post/> },
+        { path: 'post/new', element: <NewPost/>}
       ]}
     ]
   }

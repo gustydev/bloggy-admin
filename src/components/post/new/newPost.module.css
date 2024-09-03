@@ -1,0 +1,11 @@
+.newPostForm {
+    display: grid;
+}
+
+.newPostForm > input[type='submit'] {
+    justify-self: end;
+}
+
+.newPostForm > textarea {
+    height: 25vh;
+}

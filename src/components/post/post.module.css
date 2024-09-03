@@ -20,10 +20,15 @@
     height: 100%;
 }
 
+.content, .comment {
+    white-space: pre-wrap;
+}
+
 .post {
     display: flex;
     flex-direction: column;
     position: relative;
+    word-break: break-word;
 }
 
 .post > .info {
@@ -50,14 +55,6 @@
 
 .comment > .info {
     font-weight: 600;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    align-items: start;
-    gap: 8px;
-    padding-bottom: 16px;
 }
 
 .postActions {

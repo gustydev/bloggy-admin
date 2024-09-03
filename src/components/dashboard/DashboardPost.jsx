@@ -4,15 +4,17 @@ import styles from './dashboard.module.css'
 
 function DashboardPost({ id, title, subtitle, author, createdAt, updatedAt, _count, published }) {
     const count = _count.comments;
+    const truncatedTitle = title.length > 50 ? title.substring(0, 50) + '(...)' : title;
+    const truncatedSubtitle = subtitle.length > 30 ? subtitle.substring(0, 30) + '(...)' : subtitle; 
 
     return (
         <div className={styles.post}>
             <strong>
                 <Link to={`/post/${id}`}>
-                    {title} 
+                    {truncatedTitle} 
                 </Link> 
             </strong>
-            &nbsp;{subtitle !== null ? `(${subtitle})` : ''}
+            &nbsp;{subtitle.length > 0 ? `(${truncatedSubtitle})` : ''}
             <div className={styles.info}> 
                 posted by {author.name} at {new Date(createdAt).toLocaleString()} 
                 {updatedAt !== createdAt && ` [updated ${new Date(updatedAt).toLocaleString()}]`}
