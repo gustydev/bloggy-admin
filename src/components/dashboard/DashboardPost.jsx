@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import PropTypes from 'prop-types';
 import styles from './dashboard.module.css'
 
-function DashboardPost({ id, title, subtitle, author, createdAt, updatedAt, _count }) {
+function DashboardPost({ id, title, subtitle, author, createdAt, updatedAt, _count, published }) {
     const count = _count.comments;
 
     return (
@@ -17,7 +17,7 @@ function DashboardPost({ id, title, subtitle, author, createdAt, updatedAt, _cou
                 posted by {author.name} at {new Date(createdAt).toLocaleString()} 
                 {updatedAt !== createdAt && ` [updated ${new Date(updatedAt).toLocaleString()}]`}
                 <div>
-                    <em>{count} {count !== 1 ? 'comments' : 'comment'}</em>
+                    <em>{published ? 'Published' : 'Unpublished'}</em>, {count} {count !== 1 ? 'comments' : 'comment'}
                 </div>
             </div>
         </div>
@@ -32,7 +32,8 @@ DashboardPost.propTypes = {
     updatedAt: PropTypes.string,
     content: PropTypes.string,
     subtitle: PropTypes.string,
-    _count: PropTypes.object
+    _count: PropTypes.object,
+    published: PropTypes.bool
 }
 
 export default DashboardPost;

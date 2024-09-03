@@ -7,21 +7,19 @@ export default function TopBar() {
     <div className="topBar">
         <h1>bloggy (admin)</h1>
         <ul>
-            {auth.token && auth.user ? (
-                <li>
-                    logged in as <strong>{auth.user.name}</strong> (<a href='/' onClick={() => auth.logOut()}>log out</a>)
-                </li>
-            ) : (
-                <>
                 <li>
                     <Link to='/'>home</Link>
                 </li>
+                |
                 <li>
-                    <a href="">blog</a>
+                    <a href="">main blog</a>
                     {/* this link should lead to the user/client front-end */}
                 </li>
-                </>
-            )}
+                {auth.token && auth.user ? (
+                <li>
+                    | logged in as <strong>{auth.user.name}</strong> (<a href='/' onClick={() => auth.logOut()}>log out</a>)
+                </li>
+            ) : ''} 
         </ul>
     </div>
     );

@@ -87,6 +87,8 @@ export default function Dashboard() {
     if (error) {
         return 'A network error has occured.'
     }
+    
+    console.log(posts)
 
     return (
         <div className={styles.home}>

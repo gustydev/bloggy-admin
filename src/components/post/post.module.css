@@ -1,0 +1,87 @@
+.main {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.title {
+    margin-bottom: 0;
+}
+
+.subtitle {
+    margin-top: 0px;
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.post > .content {
+    margin-top: 16px;
+    height: 100%;
+}
+
+.post {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.post > .info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+    align-self: end;
+    align-items: end;
+    justify-self: end;
+}
+
+.updatedAt {
+    font-size: 14px;
+    /* font-style: italic; */
+}
+
+.comments > * {
+    margin-bottom: 16px;
+}
+
+.comment {
+    position: relative;
+}
+
+.comment > .info {
+    font-weight: 600;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 8px;
+    padding-bottom: 16px;
+}
+
+.postActions {
+    display: flex;
+    gap: 8px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.commentActions {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: -3%;
+    top: 0;
+}
+
+.commentActions > button {
+    border: 0;
+    background-color: none;
+    color: red;
+}
+
+.commentActions > button:hover {
+    color: green;
+}

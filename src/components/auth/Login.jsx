@@ -35,7 +35,7 @@ export default function Login() {
         </form>
         {auth.error && <p><strong>{auth.error}</strong>. Please try again.</p>}
         <p>
-            don&apos;t have an account? <Link to='/register'>register</Link>
+            don&apos;t have an account? <Link to='/register'>register!</Link>
         </p>
         </div>
     )
