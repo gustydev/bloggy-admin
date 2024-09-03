@@ -1,0 +1,38 @@
+.post, .comment {
+    margin-bottom: 16px;
+}
+
+.home {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    height: 100%;
+    gap: 32px;
+}
+
+.pageNav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    padding: 16px;
+    gap: 8px;
+}
+
+.newer {
+    grid-column: 1 / 2;
+    justify-self: end;
+}
+
+.older {
+    grid-column: 2 / 3;
+    justify-self: start;
+}
+
+.left, .right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+h2 {
+    margin: 0;
+    margin-bottom: 16px;
+}
