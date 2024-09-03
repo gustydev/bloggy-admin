@@ -14,6 +14,14 @@ export default function Dashboard() {
     const [commentPage, setCommentPage] = useState(1);
     const commentLimit = 8
 
+    const handlePostPageChange = (increment) => {
+        setPostPage((prev) => prev + increment);
+    };
+    
+    const handleCommentPageChange = (increment) => {
+        setCommentPage((prev) => prev + increment);
+    };
+
     useEffect(() => {
         let ignore = false;
 
@@ -85,29 +93,21 @@ export default function Dashboard() {
           <div className={styles.left}>
             <div className={styles.posts}>
                 <h2>posts</h2>
-                {loadingPosts ? 'loading posts...' : (
-                    posts.map((post) => {
-                        return <DashboardPost key={post.id} {...post}></DashboardPost>
-                    })
-                )}
+                {loadingPosts ? 'loading posts...' : posts.map((post) => <DashboardPost key={post.id} {...post} />)}
             </div>
             <div className={styles.pageNav}>
-                {postPage > 1 ? <button className={styles.newer} onClick={() => {setPostPage(postPage - 1)}}>show newer posts</button> : ''}
-                {posts.length < postLimit ? '' : <button className={styles.older} onClick={() => {setPostPage(postPage + 1)}}>show older posts</button>}
+                {postPage > 1 && <button className={styles.newer} onClick={() => handlePostPageChange(-1)}>show newer posts</button>}
+                {posts.length === postLimit && <button className={styles.older} onClick={() => handlePostPageChange(1)}>show older posts</button>}
             </div>
           </div>
           <div className={styles.right}>
             <div className={styles.recentComments}>
                 <h2>comments</h2>
-                {loadingComments ? 'loading comments...' : (
-                    comments.map((comment) => {
-                        return <DashboardComment key={comment.id} {...comment}></DashboardComment>
-                    })
-                )}
+                {loadingComments ? 'loading comments...' : comments.map((comment) => <DashboardComment key={comment.id} {...comment} />)}
             </div>
             <div className={styles.commentNav}>
-                {commentPage > 1 ? <button className={styles.newer} onClick={() => {setCommentPage(commentPage - 1)}}>show newer comments</button> : ''}
-                {comments.length < commentLimit ? '' : <button className={styles.older} onClick={() => {setCommentPage(commentPage + 1)}}>show older comments</button>}
+                {commentPage > 1 ? <button className={styles.newer} onClick={() => {handleCommentPageChange(-1)}}>show newer comments</button> : ''}
+                {comments.length === commentLimit && <button className={styles.older} onClick={() => handleCommentPageChange(1)}>show older comments</button>}
             </div>
           </div>
         </div>
