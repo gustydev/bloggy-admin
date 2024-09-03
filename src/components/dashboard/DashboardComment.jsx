@@ -3,6 +3,14 @@ import PropTypes from 'prop-types';
 import styles from './dashboard.module.css'
 
 function DashboardComment({ author, content, createdAt, post, postId }) {
+    if (content.length > 50) {
+        content = content.substring(0, 50) + '(...)'
+    }
+
+    if (post.title.length > 20) {
+        post.title = post.title.substring(0, 20) + '(...)'
+    }
+
     return (
         <div className={styles.comment}>
             <div className="info">

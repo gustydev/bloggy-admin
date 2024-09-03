@@ -1,6 +1,6 @@
 import './App.css'
 import { Outlet } from 'react-router-dom';
-import TopBar from './components/dashboard/TopBar';
+import TopBar from './components/TopBar';
 import AuthProvider from './hooks/AuthProvider';
 
 function App() {

@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom"
-import useAuth from "../../hooks/useAuth";
+import useAuth from "../hooks/useAuth";
 
 export default function TopBar() {
     const auth = useAuth();
     return (
     <div className="topBar">
-        <h1>bloggy</h1>
+        <h1>bloggy (admin)</h1>
         <ul>
             {auth.token && auth.user ? (
                 <li>

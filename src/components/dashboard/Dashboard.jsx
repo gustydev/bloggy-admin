@@ -9,8 +9,10 @@ export default function Dashboard() {
     const [error, setError] = useState(null)
     const [loadingPosts, setLoadingPosts] = useState(true)
     const [loadingComments, setLoadingComments] = useState(true);
-    const [page, setPage] = useState(1);
-    const [limit, setLimit] = useState(12)
+    const [postPage, setPostPage] = useState(1);
+    const postLimit = 10
+    const [commentPage, setCommentPage] = useState(1);
+    const commentLimit = 8
 
     useEffect(() => {
         let ignore = false;
@@ -18,7 +20,7 @@ export default function Dashboard() {
         async function fetchPosts() {
             setLoadingPosts(true)
             try {
-                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts?page=${page}&limit=${limit}`);
+                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts?page=${postPage}&limit=${postLimit}`);
                 const posts = await response.json();
 
                 if (!response.ok) {
@@ -41,14 +43,15 @@ export default function Dashboard() {
         return () => {
             ignore = true;
         }
-    }, [page, limit])
+    }, [postPage, postLimit])
 
     useEffect(() => {
         let ignore = false;
 
         async function fetchComments() {
+            setLoadingComments(true)
             try {
-                const response = await fetch('https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/comments?limit=5&sort=desc');
+                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/comments?limit=${commentLimit}&page=${commentPage}&sort=desc`);
                 const comments = await response.json();
 
                 if (!response.ok) {
@@ -71,7 +74,7 @@ export default function Dashboard() {
         return () => {
             ignore = true;
         }
-    }, [])
+    }, [commentPage])
     
     if (error) {
         return 'A network error has occured.'
@@ -89,18 +92,22 @@ export default function Dashboard() {
                 )}
             </div>
             <div className={styles.pageNav}>
-                {page > 1 ? <button className={styles.newer} onClick={() => {setPage(page - 1)}}>show newer posts</button> : ''}
-                {posts.length < limit ? '' : <button className={styles.older} onClick={() => {setPage(page + 1)}}>show older posts</button>}
+                {postPage > 1 ? <button className={styles.newer} onClick={() => {setPostPage(postPage - 1)}}>show newer posts</button> : ''}
+                {posts.length < postLimit ? '' : <button className={styles.older} onClick={() => {setPostPage(postPage + 1)}}>show older posts</button>}
             </div>
           </div>
           <div className={styles.right}>
             <div className={styles.recentComments}>
                 <h2>comments</h2>
-                {loadingComments ? 'loading recent comments...' : (
+                {loadingComments ? 'loading comments...' : (
                     comments.map((comment) => {
                         return <DashboardComment key={comment.id} {...comment}></DashboardComment>
                     })
                 )}
+            </div>
+            <div className={styles.commentNav}>
+                {commentPage > 1 ? <button className={styles.newer} onClick={() => {setCommentPage(commentPage - 1)}}>show newer comments</button> : ''}
+                {comments.length < commentLimit ? '' : <button className={styles.older} onClick={() => {setCommentPage(commentPage + 1)}}>show older comments</button>}
             </div>
           </div>
         </div>

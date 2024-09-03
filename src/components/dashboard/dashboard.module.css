@@ -9,7 +9,7 @@
     gap: 32px;
 }
 
-.pageNav {
+.pageNav, .commentNav {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     padding: 16px;
