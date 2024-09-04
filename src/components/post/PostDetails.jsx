@@ -45,7 +45,7 @@ export default function PostDetails( { post, handleUpdate, handleDelete }) {
                 {(edited && !editing) && (
                     <>
                     <div>
-                        status: <strong>edited</strong>
+                        <strong>pending changes!</strong>
                     </div>
                     <button onClick={handleSave}>save changes</button>
                     </>

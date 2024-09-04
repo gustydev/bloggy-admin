@@ -8,13 +8,18 @@ export default function NewPost() {
     const [postData, setPostData] = useState({
         title: '',
         subtitle: '',
-        content: ''
+        content: '',
+        published: true
     })
     const auth = useAuth();
     const [errors, setErrors] = useState(null);
 
     const handleInputChange = (e) => {
-        const { name, value } = e.target;
+        let { name, value } = e.target;
+        if (name === 'published') {
+            value = value === 'true' ? true : false
+        }
+        
         setPostData((prev) => ({
           ...prev,
           [name]: value,
@@ -33,7 +38,8 @@ export default function NewPost() {
                 body: JSON.stringify({
                     "title": postData.title,
                     "subtitle": postData.subtitle,
-                    "content": postData.content
+                    "content": postData.content,
+                    "published": postData.published
                 })
             })
             const post = await response.json();
@@ -58,6 +64,13 @@ export default function NewPost() {
                 <input onChange={(e) => {handleInputChange(e)}} type="text" name='title' id='title' placeholder='post title (required)' required maxLength='150' />
                 <input onChange={(e) => {handleInputChange(e)}} type="text" name='subtitle' id='subtitle' placeholder='subtitle' maxLength='100'/>
                 <textarea onChange={(e) => {handleInputChange(e)}} name="content" id="content" placeholder='post contents (required)' required maxLength='10000' />
+                <fieldset>
+                    <legend>published?</legend>
+                    <input type="radio" name="published" id="true" value={true} onChange={handleInputChange} defaultChecked/>
+                    <label htmlFor="true">published</label>
+                    <input type="radio" name="published" id="false" value={false} onChange={handleInputChange} />
+                    <label htmlFor="false">unpublished</label>
+                </fieldset>
                 <input type="submit" value="Post" />
             </form>
             {errors && (
