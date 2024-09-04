@@ -46,6 +46,26 @@ export default function Post() {
         }
     }
 
+    async function updatePost(post) {
+        try {
+            const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/${post.id}`, {
+                method: 'put',
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${auth.token}`
+                },
+                body: JSON.stringify(post)
+            })
+
+            if (response.ok) {
+                location.reload() // Refresh page
+            }
+
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     async function deleteComment(commentId) {
         const accepted = confirm(`Are you sure you want to delete comment of ID ${commentId}?`)
         if (accepted) {
@@ -109,7 +129,7 @@ export default function Post() {
 
     return (
         <div className={styles.main}>
-            <PostDetails post={post}></PostDetails>
+            <PostDetails post={post} handleUpdate={updatePost}></PostDetails>
             <div className="commentContainer">
                 <CommentSection comments={post.comments} handleCommentDelete={deleteComment}></CommentSection>
                 <CommentForm commentData={commentData} handleInputChange={handleInputChange} postComment={postComment}></CommentForm>

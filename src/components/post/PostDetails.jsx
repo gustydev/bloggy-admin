@@ -2,14 +2,16 @@ import PropTypes from 'prop-types';
 import styles from './post.module.css';
 import { Link } from 'react-router-dom';
 
-export default function PostDetails( {post}) {
+export default function PostDetails( {post, handleUpdate}) {
     return (
         <div className={styles.post}>
             <h2 className={styles.title}>{post.title}</h2>
             <div className={styles.postActions}>
                 <Link to={`/post/${post.id}/edit`}><button>edit post</button></Link>
                 <button>delete post</button>
-                <button>{post.published ? 'unpublish' : 'publish'}</button>
+                <button onClick={() => {handleUpdate({...post, published: !post.published})}}>
+                    {post.published ? 'unpublish' : 'publish'}
+                </button>
             </div>
             {post.subtitle ? (
                 <h3 className={styles.subtitle}>{post.subtitle}</h3>
@@ -24,11 +26,15 @@ export default function PostDetails( {post}) {
                     updated {new Date(post.updatedAt).toLocaleString()}
                 </div>
                 ) : ''}
+                <div>
+                    status: <strong>{post.published ? 'published' : "unpublished"}</strong>
+                </div>
             </div>
         </div>
     )   
 }
 
 PostDetails.propTypes = {
-    post: PropTypes.object
+    post: PropTypes.object,
+    handleUpdate: PropTypes.func
 }

@@ -9,7 +9,7 @@ export default function CommentSection( { comments, handleCommentDelete }) {
                 return (
                     <div className={styles.comment} key={comment.id}>
                         <div className={styles.info}>
-                            [ID: {comment.id}] {comment.author} ({new Date(comment.createdAt).toLocaleString()}) :
+                            [ID: {comment.id}] {comment.author} ({new Date(comment.createdAt).toLocaleString()}):
                         </div>
                         <div className={styles.content}>{comment.content}</div>
                         <div className={styles.commentActions}>
