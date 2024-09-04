@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import styles from './post.module.css'
 
-export default function CommentSection( { comments }) {
+export default function CommentSection( { comments, handleCommentDelete }) {
     return (
         <div className={styles.comments}>
             <h2>comments</h2>
@@ -9,12 +9,12 @@ export default function CommentSection( { comments }) {
                 return (
                     <div className={styles.comment} key={comment.id}>
                         <div className={styles.info}>
-                            {comment.author} ({new Date(comment.createdAt).toLocaleString()}):
+                            [ID: {comment.id}] {comment.author} ({new Date(comment.createdAt).toLocaleString()}) :
                         </div>
                         <div className={styles.content}>{comment.content}</div>
                         <div className={styles.commentActions}>
                             <button>edit</button>
-                            <button>delete</button>
+                            <button onClick={() => {handleCommentDelete(comment.id)}}>delete</button>
                         </div>
                     </div>
                 )
@@ -24,5 +24,6 @@ export default function CommentSection( { comments }) {
 }
 
 CommentSection.propTypes = {
-    comments: PropTypes.array
+    comments: PropTypes.array,
+    handleCommentDelete: PropTypes.func
 }

@@ -4,6 +4,7 @@ import CommentSection from "./CommentSection";
 import CommentForm from "./CommentForm";
 import PostDetails from "./PostDetails";
 import styles from './post.module.css'
+import useAuth from '../../hooks/useAuth';
 
 export default function Post() {
     const [post, setPost] = useState(null)
@@ -14,6 +15,7 @@ export default function Post() {
         author: '',
         content: ''
     })
+    const auth = useAuth();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -42,6 +44,28 @@ export default function Post() {
         } finally {
             location.reload() // Refresh page
         }
+    }
+
+    async function deleteComment(commentId) {
+        const accepted = confirm(`Are you sure you want to delete comment of ID ${commentId}?`)
+        if (accepted) {
+            try {
+                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/comments/${commentId}`, {
+                    method: 'delete',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${auth.token}`
+                    }
+                })
+                
+                if (response.ok) {
+                    location.reload();
+                }
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        return;
     }
 
     useEffect(() => {
@@ -87,7 +111,7 @@ export default function Post() {
         <div className={styles.main}>
             <PostDetails post={post}></PostDetails>
             <div className="commentContainer">
-                <CommentSection comments={post.comments}></CommentSection>
+                <CommentSection comments={post.comments} handleCommentDelete={deleteComment}></CommentSection>
                 <CommentForm commentData={commentData} handleInputChange={handleInputChange} postComment={postComment}></CommentForm>
             </div>
         </div>
