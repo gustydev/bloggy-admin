@@ -5,17 +5,20 @@ import CommentForm from "./CommentForm";
 import PostDetails from "./PostDetails";
 import styles from './post.module.css'
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from "react-router-dom";
 
 export default function Post() {
     const [post, setPost] = useState(null)
     const [loading, setLoading] = useState(true)
-    const [error, setError] = useState(null)
+    const [postFetchError, setPostFetchError] = useState(null)
+    const [errors, setErrors] = useState(null);
     const { postId } = useParams();
     const [commentData, setCommentData] = useState({
         author: '',
         content: ''
     })
     const auth = useAuth();
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -56,9 +59,12 @@ export default function Post() {
                 },
                 body: JSON.stringify(post)
             })
+            const updated = await response.json();
 
             if (response.ok) {
                 location.reload() // Refresh page
+            } else {
+                setErrors(updated.errors.messages)
             }
 
         } catch (error) {
@@ -88,6 +94,29 @@ export default function Post() {
         return;
     }
 
+    async function deletePost(postId) {
+        const accepted = confirm(`Are you sure you want to delete post of ID ${postId}?`)
+        if (accepted) {
+            try {
+                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/${postId}`, {
+                    method: 'delete',
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${auth.token}`
+                    }
+                })
+                
+                if (response.ok) {
+                    navigate('/'); // Return to front page
+                }
+
+            } catch (error) {
+                console.error(error)
+            }
+        }
+        return;
+    }
+
     useEffect(() => {
         let ignore = false;
 
@@ -104,7 +133,7 @@ export default function Post() {
                 setPost(post);
             } catch (error) {
                 console.error(error)
-                setError(error)
+                setPostFetchError(error)
             } finally {
                 setLoading(false)
             }
@@ -123,17 +152,27 @@ export default function Post() {
         return 'loading...'
     }
 
-    if (error) {
+    if (postFetchError) {
         return 'a network error has occured'
     }
 
     return (
         <div className={styles.main}>
-            <PostDetails post={post} handleUpdate={updatePost}></PostDetails>
+            <PostDetails post={post} handleUpdate={updatePost} handleDelete={deletePost}></PostDetails>
             <div className="commentContainer">
                 <CommentSection comments={post.comments} handleCommentDelete={deleteComment}></CommentSection>
                 <CommentForm commentData={commentData} handleInputChange={handleInputChange} postComment={postComment}></CommentForm>
             </div>
+            {errors && (
+                <div className="errors">
+                    <p><strong>{errors.length > 1 ? 'errors:' : 'error:'}</strong></p>
+                    <ul>
+                    {errors.map((e, index) => (
+                        <li key={index}>{e}</li>
+                    ))}
+                    </ul>
+                </div>
+            )}
         </div>
     )
 }

@@ -1,6 +1,6 @@
 .main {
     display: grid;
-    grid-template-rows: 1fr 1fr;
+    /* grid-template-rows: 1fr 1fr; */
     flex-direction: column;
     height: 100vh;
 }
@@ -81,4 +81,12 @@
 
 .commentActions > button:hover {
     color: green;
+}
+
+.post > input {
+    margin-bottom: 8px;
+}
+
+.post > textarea {
+    height: 100%;
 }
