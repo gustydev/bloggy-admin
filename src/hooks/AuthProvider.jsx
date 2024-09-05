@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "./AuthContext";
 import { apiRequest } from "../utils/api";
 import { API_URL } from "../utils/config";
+import PropTypes from 'prop-types';
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
@@ -21,8 +22,8 @@ export default function AuthProvider({ children }) {
         })      
 
         setUser(response.user)
-        localStorage.setItem('token', response.token)
         setToken(response.token)
+        localStorage.setItem('token', response.token)
         localStorage.setItem('user', JSON.stringify(response.user))
         setError('')
         navigate('/')
@@ -44,3 +45,7 @@ export default function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 };
+
+AuthProvider.propTypes = {
+  children: PropTypes.array
+}

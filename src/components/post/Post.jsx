@@ -9,12 +9,13 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../utils/config";
 import { apiRequest } from "../../utils/api";
 import { createResource, updateResource, deleteResource } from "../../utils/crudOperations";
+import ErrorDisplay from "../error/ErrorDisplay";
 
 export default function Post() {
     const [post, setPost] = useState(null)
     const [loading, setLoading] = useState(true)
     const [postFetchError, setPostFetchError] = useState(null)
-    const [errors, setErrors] = useState(null);
+    const [errors, setErrors] = useState([]);
     const { postId } = useParams();
     const [commentData, setCommentData] = useState({
         author: '',
@@ -123,16 +124,7 @@ export default function Post() {
                 <CommentSection comments={post.comments} handleCommentUpdate={updateComment} handleCommentDelete={deleteComment}></CommentSection>
                 <CommentForm commentData={commentData} handleInputChange={handleInputChange} postComment={postComment}></CommentForm>
             </div>
-            {errors && (
-                <div className="errors">
-                    <p><strong>{errors.length > 1 ? 'errors:' : 'error:'}</strong></p>
-                    <ul>
-                    {errors.map((e, index) => (
-                        <li key={index}>{e}</li>
-                    ))}
-                    </ul>
-                </div>
-            )}
+            {errors.length > 0 && <ErrorDisplay errors={errors}/>}
         </div>
     )
 }

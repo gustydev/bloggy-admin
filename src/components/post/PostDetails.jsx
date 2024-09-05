@@ -82,7 +82,7 @@ export default function PostDetails( { post, handleUpdate, handleDelete }) {
             ) : postData.subtitle ? (
                 <h3 className={styles.subtitle}>{postData.subtitle}</h3>
             ) : (
-                ""
+                null
             )}
 
             {editing ? (
@@ -103,11 +103,11 @@ export default function PostDetails( { post, handleUpdate, handleDelete }) {
                 <div className={styles.authorAndCreationDate}>
                     posted by <strong>{post.author.name}</strong> on {new Date(post.createdAt).toLocaleString()}
                 </div>
-                {post.updatedAt !== post.createdAt ? (
+                {post.updatedAt !== post.createdAt && (
                 <div className={styles.updatedAt}>
                     updated {new Date(post.updatedAt).toLocaleString()}
                 </div>
-                ) : ''}
+                )}
                 <div>
                     status: <strong>{post.published ? 'published' : "unpublished"}</strong>
                 </div>

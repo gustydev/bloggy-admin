@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../utils/config";
 import { apiRequest } from "../../utils/api";
+import ErrorDisplay from "../error/ErrorDisplay";
 
 export default function Register() {
     const [registerInput, setRegisterInput] = useState({
@@ -9,7 +10,7 @@ export default function Register() {
         password: '',
         secret: ''
     })
-    const [errors, setErrors] = useState(null);
+    const [errors, setErrors] = useState([]);
     const navigate = useNavigate();
 
     const handleInputChange = (e) => {
@@ -50,16 +51,7 @@ export default function Register() {
             <input onChange={(e) => {handleInputChange(e)}} required type="text" id='secret' name='secret'/>
             <input type="submit" value="submit" />
         </form>
-        {errors && (
-            <div className="errors">
-                <p><strong>{errors.length > 1 ? 'errors:' : 'error:'}</strong></p>
-                <ul>
-                {errors.map((e, index) => (
-                    <li key={index}>{e}</li>
-                ))}
-                </ul>
-            </div>
-        )}
+        {errors.length > 0 && <ErrorDisplay errors={errors}/>}
         </>
     )
 }

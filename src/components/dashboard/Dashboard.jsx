@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import styles from './dashboard.module.css'
 import DashboardPost from "./DashboardPost";
 import DashboardComment from "./DashboardComment";
+import Pagination from "./Pagination";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../utils/config";
 import { apiRequest } from "../../utils/api";
@@ -88,8 +89,7 @@ export default function Dashboard() {
                 <Link to='/post/new' className={styles.newPost}><button>new post</button></Link>
             </div>
             <div className={styles.pageNav}>
-                {postPage > 1 && <button className={styles.newer} onClick={() => handlePostPageChange(-1)}>show newer posts</button>}
-                {posts.length === postLimit && <button className={styles.older} onClick={() => handlePostPageChange(1)}>show older posts</button>}
+                <Pagination currentPage={postPage} totalItems={posts.length} limit={postLimit} onPageChange={handlePostPageChange}/>
             </div>
           </div>
           <div className={styles.right}>
@@ -98,8 +98,7 @@ export default function Dashboard() {
                 {loadingComments ? 'loading comments...' : comments.map((comment) => <DashboardComment key={comment.id} {...comment} />)}
             </div>
             <div className={styles.commentNav}>
-                {commentPage > 1 ? <button className={styles.newer} onClick={() => {handleCommentPageChange(-1)}}>show newer comments</button> : ''}
-                {comments.length === commentLimit && <button className={styles.older} onClick={() => handleCommentPageChange(1)}>show older comments</button>}
+                <Pagination currentPage={commentPage} totalItems={comments.length} limit={commentLimit} onPageChange={handleCommentPageChange} />
             </div>
           </div>
         </div>

@@ -5,7 +5,7 @@ export default function CommentForm( {commentData, handleInputChange, postCommen
         <form onSubmit={(e) => { postComment(e) }}>
             <label htmlFor="author"></label>
             <input type="text" id='author' name='author' placeholder='name (optional)' value={commentData.author} onChange={handleInputChange}/>
-            <textarea name="content" id="content" placeholder="leave a comment..." value={commentData.content} onChange={handleInputChange}></textarea>
+            <textarea name="content" id="content" placeholder="leave a comment..." value={commentData.content} onChange={handleInputChange} minLength='1'></textarea>
             <input type="submit" value="Submit" />
         </form>
     )   
