@@ -8,6 +8,7 @@ import useAuth from '../../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../utils/config";
 import { apiRequest } from "../../utils/api";
+import { createResource, updateResource, deleteResource } from "../../utils/crudOperations";
 
 export default function Post() {
     const [post, setPost] = useState(null)
@@ -31,55 +32,30 @@ export default function Post() {
     };
 
     async function postComment(e) {
+        e.preventDefault();
         try {
-            e.preventDefault();
-            await apiRequest(`${API_URL}/posts/${postId}/comment`, {
-                method: 'post',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    "author": commentData.author,
-                    "content": commentData.content
-                })
-            })
-            
-            location.reload() // page refresh
+            await createResource(`posts/${postId}/comment`, commentData);
+            location.reload(); // page refresh
         } catch (errors) {
-            setErrors(errors)
+            setErrors(errors);
         }
     }
 
     async function updatePost(post) {
         try {
-            await apiRequest(`${API_URL}/posts/${post.id}`, {
-                method: 'put',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${auth.token}`
-                },
-                body: JSON.stringify(post)
-            })
-
-            location.reload() // Refresh page
+            await updateResource('posts', post.id, post, auth.token);
+            location.reload(); // Refresh page
         } catch (errors) {
-            setErrors(errors)
+            setErrors(errors);
         }
     }
 
     async function updateComment(comment) {
         try {
-            await apiRequest(`${API_URL}/comments/${comment.id}`, {
-                method: 'put',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${auth.token}`
-                },
-                body: JSON.stringify(comment)
-            })
-            location.reload() // Refresh page
+            await updateResource('comments', comment.id, comment, auth.token);
+            location.reload(); // Refresh page
         } catch (errors) {
-            setErrors(errors)
+            setErrors(errors);
         }
     }
 
@@ -87,40 +63,24 @@ export default function Post() {
         const accepted = confirm(`Are you sure you want to delete post of ID ${postId}?`)
         if (accepted) {
             try {
-                await apiRequest(`${API_URL}/posts/${postId}`, {
-                    method: 'delete',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${auth.token}`
-                    }
-                })
-                
+                await deleteResource('posts', postId, auth.token);
                 navigate('/'); // Return to front page
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
         }
-        return;
     }
 
     async function deleteComment(commentId) {
-        const accepted = confirm(`Are you sure you want to delete comment of ID ${commentId}?`)
+        const accepted = confirm(`Are you sure you want to delete comment of ID ${commentId}?`);
         if (accepted) {
             try {
-                await apiRequest(`${API_URL}/comments/${commentId}`, {
-                    method: 'delete',
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${auth.token}`
-                    }
-                })
-
+                await deleteResource('comments', commentId, auth.token);
                 location.reload();
             } catch (error) {
-                console.error(error)
+                console.error(error);
             }
         }
-        return;
     }
 
     useEffect(() => {

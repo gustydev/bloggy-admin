@@ -2,8 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import styles from './newPost.module.css';
-import { API_URL } from "../../../utils/config";
-import { apiRequest } from "../../../utils/api";
+import { createResource } from "../../../utils/crudOperations";
 
 export default function NewPost() {
     const navigate = useNavigate();
@@ -31,21 +30,14 @@ export default function NewPost() {
     async function post(e) {
         try {
             e.preventDefault();
-            const post = await apiRequest(`${API_URL}/posts/`, {
-                method: 'post',
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${auth.token}`
-                },
-                body: JSON.stringify({
-                    "title": postData.title,
-                    "subtitle": postData.subtitle,
-                    "content": postData.content,
-                    "published": postData.published
-                })
-            })
+            const post = await createResource('posts', {
+                title: postData.title,
+                subtitle: postData.subtitle,
+                content: postData.content,
+                published: postData.published
+            }, auth.token);
             
-            navigate(`/post/${post.id}`)
+            navigate(`/post/${post.id}`);
         } catch (errors) {
             setErrors(errors)
         }
