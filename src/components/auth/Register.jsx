@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../utils/config";
+import { apiRequest } from "../../utils/api";
 
 export default function Register() {
     const [registerInput, setRegisterInput] = useState({
@@ -21,7 +23,7 @@ export default function Register() {
     async function handleSubmit(e) {
         e.preventDefault();
         try {
-            const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/user/register`, {
+            await apiRequest(`${API_URL}/user/register`, {
                 method: 'post',
                 headers: {
                     "Content-Type": "application/json"
@@ -29,19 +31,10 @@ export default function Register() {
                 body: JSON.stringify(registerInput)
             })
             
-            const json = await response.json();       
-
-            if (!response.ok) {
-                console.log(response, json)
-                setErrors(json.errors.messages || 'An error has occured. Please try again.')
-                throw new Error(`Error in user register (status ${response.status})`)
-            } else {
-                alert(`user ${registerInput.name} sucessfully registered! proceed to log in`)
-                navigate('/login');
-            }
-            
-        } catch (error) {
-            console.error(error)
+            alert(`user ${registerInput.name} sucessfully registered! proceed to log in`)
+            navigate('/login');
+        } catch (errors) {
+            setErrors(errors)
         }
     }
 
@@ -59,12 +52,12 @@ export default function Register() {
         </form>
         {errors && (
             <div className="errors">
-            <p><strong>{errors.length > 1 ? 'errors:' : 'error:'}</strong></p>
-            <ul>
-            {errors.map((e, index) => (
-                <li key={index}>{e}</li>
-            ))}
-            </ul>
+                <p><strong>{errors.length > 1 ? 'errors:' : 'error:'}</strong></p>
+                <ul>
+                {errors.map((e, index) => (
+                    <li key={index}>{e}</li>
+                ))}
+                </ul>
             </div>
         )}
         </>

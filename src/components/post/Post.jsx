@@ -6,6 +6,8 @@ import PostDetails from "./PostDetails";
 import styles from './post.module.css'
 import useAuth from '../../hooks/useAuth';
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../utils/config";
+import { apiRequest } from "../../utils/api";
 
 export default function Post() {
     const [post, setPost] = useState(null)
@@ -31,7 +33,7 @@ export default function Post() {
     async function postComment(e) {
         try {
             e.preventDefault();
-            const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/${postId}/comment`, {
+            await apiRequest(`${API_URL}/posts/${postId}/comment`, {
                 method: 'post',
                 headers: {
                     "Content-Type": "application/json"
@@ -41,17 +43,16 @@ export default function Post() {
                     "content": commentData.content
                 })
             })
-            await response.json();            
-        } catch (error) {
-            console.error(error)
-        } finally {
-            location.reload() // Refresh page
+            
+            location.reload() // page refresh
+        } catch (errors) {
+            setErrors(errors)
         }
     }
 
     async function updatePost(post) {
         try {
-            const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/${post.id}`, {
+            await apiRequest(`${API_URL}/posts/${post.id}`, {
                 method: 'put',
                 headers: {
                     "Content-Type": "application/json",
@@ -59,22 +60,16 @@ export default function Post() {
                 },
                 body: JSON.stringify(post)
             })
-            const updated = await response.json();
 
-            if (response.ok) {
-                location.reload() // Refresh page
-            } else {
-                setErrors(updated.errors.messages)
-            }
-
-        } catch (error) {
-            console.error(error)
+            location.reload() // Refresh page
+        } catch (errors) {
+            setErrors(errors)
         }
     }
 
     async function updateComment(comment) {
         try {
-            const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/comments/${comment.id}`, {
+            await apiRequest(`${API_URL}/comments/${comment.id}`, {
                 method: 'put',
                 headers: {
                     "Content-Type": "application/json",
@@ -82,16 +77,9 @@ export default function Post() {
                 },
                 body: JSON.stringify(comment)
             })
-            const updated = await response.json();
-
-            if (response.ok) {
-                location.reload() // Refresh page
-            } else {
-                setErrors(updated.errors.messages)
-            }
-
-        } catch (error) {
-            console.error(error)
+            location.reload() // Refresh page
+        } catch (errors) {
+            setErrors(errors)
         }
     }
 
@@ -99,7 +87,7 @@ export default function Post() {
         const accepted = confirm(`Are you sure you want to delete post of ID ${postId}?`)
         if (accepted) {
             try {
-                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/${postId}`, {
+                await apiRequest(`${API_URL}/posts/${postId}`, {
                     method: 'delete',
                     headers: {
                         "Content-Type": "application/json",
@@ -107,10 +95,7 @@ export default function Post() {
                     }
                 })
                 
-                if (response.ok) {
-                    navigate('/'); // Return to front page
-                }
-
+                navigate('/'); // Return to front page
             } catch (error) {
                 console.error(error)
             }
@@ -122,17 +107,15 @@ export default function Post() {
         const accepted = confirm(`Are you sure you want to delete comment of ID ${commentId}?`)
         if (accepted) {
             try {
-                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/comments/${commentId}`, {
+                await apiRequest(`${API_URL}/comments/${commentId}`, {
                     method: 'delete',
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${auth.token}`
                     }
                 })
-                
-                if (response.ok) {
-                    location.reload();
-                }
+
+                location.reload();
             } catch (error) {
                 console.error(error)
             }
@@ -146,13 +129,7 @@ export default function Post() {
         async function fetchPost() {
             setLoading(true);
             try {
-                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/${postId}`);
-                const post = await response.json();
-
-                if (!response.ok) {
-                    throw new Error("Error fetching post. Status: ", response.status)
-                }
-
+                const post = await apiRequest(`${API_URL}/posts/${postId}`);
                 setPost(post);
             } catch (error) {
                 console.error(error)

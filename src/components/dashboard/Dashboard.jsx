@@ -3,6 +3,8 @@ import styles from './dashboard.module.css'
 import DashboardPost from "./DashboardPost";
 import DashboardComment from "./DashboardComment";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../utils/config";
+import { apiRequest } from "../../utils/api";
 
 export default function Dashboard() {
     const [posts, setPosts] = useState([]);
@@ -29,13 +31,7 @@ export default function Dashboard() {
         async function fetchPosts() {
             setLoadingPosts(true)
             try {
-                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts?page=${postPage}&limit=${postLimit}`);
-                const posts = await response.json();
-
-                if (!response.ok) {
-                    throw new Error("Error fetching posts. Status: ", response.status)
-                }
-
+                const posts = await apiRequest(`${API_URL}/posts?page=${postPage}&limit=${postLimit}`);
                 setPosts(posts);
             } catch (error) {
                 setError(error)
@@ -60,13 +56,7 @@ export default function Dashboard() {
         async function fetchComments() {
             setLoadingComments(true)
             try {
-                const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/comments?limit=${commentLimit}&page=${commentPage}&sort=desc`);
-                const comments = await response.json();
-
-                if (!response.ok) {
-                    throw new Error("Error fetching comments. Status: ", response.status)
-                }
-
+                const comments = await apiRequest(`${API_URL}/comments?limit=${commentLimit}&page=${commentPage}&sort=desc`);
                 setComments(comments);
             } catch (error) {
                 setError(error)

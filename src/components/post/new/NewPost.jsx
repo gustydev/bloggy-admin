@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import styles from './newPost.module.css';
+import { API_URL } from "../../../utils/config";
+import { apiRequest } from "../../../utils/api";
 
 export default function NewPost() {
     const navigate = useNavigate();
@@ -29,7 +31,7 @@ export default function NewPost() {
     async function post(e) {
         try {
             e.preventDefault();
-            const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/posts/`, {
+            const post = await apiRequest(`${API_URL}/posts/`, {
                 method: 'post',
                 headers: {
                     "Content-Type": "application/json",
@@ -42,18 +44,10 @@ export default function NewPost() {
                     "published": postData.published
                 })
             })
-            const post = await response.json();
-            console.log(post)
-
-            if (response.ok) {
-                navigate(`/post/${post.id}`)
-            } else {
-                setErrors(post.errors.messages)
-                throw new Error(`Error creating post (status ${response.status})`)
-            }
-       
-        } catch (error) {
-            console.error(error)
+            
+            navigate(`/post/${post.id}`)
+        } catch (errors) {
+            setErrors(errors)
         }
     }
 

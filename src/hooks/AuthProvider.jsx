@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "./AuthContext";
+import { apiRequest } from "../utils/api";
+import { API_URL } from "../utils/config";
 
 export default function AuthProvider({ children }) {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
@@ -10,33 +12,22 @@ export default function AuthProvider({ children }) {
 
   async function userLogin(data) {
     try {
-        const response = await fetch(`https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1/user/login`, {
+        const response = await apiRequest(`${API_URL}/user/login`, {
             method: 'post',
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(data)
-        })
+        })      
 
-        const json = await response.json();       
-        
-        if (!response.ok) {
-          setError(json.error.message || 'An error has occured. Please try again.')
-          throw new Error(`Error in user login (status ${response.status})`)
-        }
-         
-        if (json) {
-          setUser(json.user)
-          localStorage.setItem('token', json.token)
-          setToken(json.token)
-          localStorage.setItem('user', JSON.stringify(json.user))
-          setError('')
-          navigate('/')
-          return;
-        }
-
-    } catch (error) {
-        console.error(error)
+        setUser(response.user)
+        localStorage.setItem('token', response.token)
+        setToken(response.token)
+        localStorage.setItem('user', JSON.stringify(response.user))
+        setError('')
+        navigate('/')
+    } catch (errors) {
+        setError(errors)
     }
   }
 
