@@ -84,9 +84,12 @@ export default function Dashboard() {
         <div className={styles.home}>
           <div className={styles.left}>
             <div className={styles.posts}>
-                <h2>posts</h2>
+                <div className={styles.postsTop}>
+                    <h2>posts</h2>
+                    <Link to='/post/new' className={styles.newPost}><button>new post</button></Link>
+                </div>
                 {loadingPosts ? 'loading posts...' : posts.map((post) => <DashboardPost key={post.id} {...post} />)}
-                <Link to='/post/new' className={styles.newPost}><button>new post</button></Link>
+                
             </div>
             <div className={styles.pageNav}>
                 <Pagination currentPage={postPage} totalItems={posts.length} limit={postLimit} onPageChange={handlePostPageChange}/>

@@ -36,3 +36,8 @@ h2 {
     margin: 0;
     margin-bottom: 16px;
 }
+
+.postsTop {
+    display: flex;
+    justify-content: space-between;
+}
