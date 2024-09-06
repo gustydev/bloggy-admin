@@ -1,1 +1,1 @@
-export const API_URL = 'https://cors-anywhere.herokuapp.com/https://bloggy.adaptable.app/api/v1'
+export const API_URL = 'https://bloggy.adaptable.app/api/v1'

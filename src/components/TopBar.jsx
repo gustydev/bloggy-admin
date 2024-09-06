@@ -12,7 +12,7 @@ export default function TopBar() {
                 </li>
                 |
                 <li>
-                    <a href="">main blog</a>
+                    <a href="https://bloggy-user.adaptable.app">main blog</a>
                     {/* this link should lead to the user/client front-end */}
                 </li>
                 {auth.token && auth.user ? (
